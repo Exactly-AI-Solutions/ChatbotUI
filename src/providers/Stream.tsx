@@ -80,10 +80,13 @@ const StreamSession = ({
   const [threadId, setThreadId] = useQueryState("threadId");
   const { getThreads, setThreads } = useThreads();
   const streamValue = useTypedStream({
-    apiUrl,
-    apiKey: apiKey ?? undefined,
-    assistantId,
+    apiUrl: process.env.NEXT_PUBLIC_API_URL || apiUrl,
+    apiKey: (process.env.NEXT_PUBLIC_LANGSMITH_API_KEY || apiKey) ?? undefined,
+    assistantId: process.env.NEXT_PUBLIC_ASSISTANT_ID || assistantId,
     threadId: threadId ?? null,
+    defaultHeaders: {
+      Authentication: `Bearer ${process.env.NEXT_PUBLIC_LANGSMITH_API_KEY}`,
+    },
     onCustomEvent: (event, options) => {
       if (isUIMessage(event) || isRemoveUIMessage(event)) {
         options.mutate((prev) => {
