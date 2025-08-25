@@ -20,6 +20,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const muted = searchParams.get("muted")
       ? `#${searchParams.get("muted")}`
       : "oklch(0.97 0 0)";
+    const inputBg = searchParams.get("inputBg")
+      ? `#${searchParams.get("inputBg")}`
+      : "oklch(0.97 0 0)";
+    const inputBgForeground = searchParams.get("inputBgForeground")
+      ? `#${searchParams.get("inputBgForeground")}`
+      : "oklch(0.97 0 0)";
     const background = searchParams.get("background")
       ? `#${searchParams.get("background")}`
       : "oklch(1 0 0)";
@@ -119,6 +125,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       "--secondary": secondary,
       "--radius": radius,
       "--muted": muted,
+      "--input-bg": inputBg,
+      "--input-bg-foreground": inputBgForeground,
       "--background": background,
       "--foreground": foreground,
       "--card": card,
