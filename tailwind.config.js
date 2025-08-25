@@ -40,6 +40,10 @@ module.exports = {
             DEFAULT: "hsl(var(--muted))",
             foreground: "hsl(var(--muted-foreground))",
           },
+          "input-bg": {
+            DEFAULT: "hsl(var(--input-bg))",
+            foreground: "hsl(var(--input-bg-foreground))",
+          },
           accent: {
             DEFAULT: "hsl(var(--accent))",
             foreground: "hsl(var(--accent-foreground))",

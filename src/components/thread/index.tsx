@@ -92,6 +92,7 @@ export function Thread() {
   const [artifactOpen, closeArtifact] = useArtifactOpen();
 
   const [threadId, _setThreadId] = useQueryState("threadId");
+  const [message, setMessage] = useQueryState("message");
   const [chatHistoryOpen, setChatHistoryOpen] = useQueryState(
     "chatHistoryOpen",
     parseAsBoolean.withDefault(false),
@@ -100,7 +101,7 @@ export function Thread() {
     "hideToolCalls",
     parseAsBoolean.withDefault(false),
   );
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(message ?? "");
   const {
     contentBlocks,
     setContentBlocks,
@@ -113,6 +114,15 @@ export function Thread() {
   } = useFileUpload();
   const [firstTokenReceived, setFirstTokenReceived] = useState(false);
   const isLargeScreen = useMediaQuery("(min-width: 1024px)");
+
+  useEffect(() => {
+    if (message) {
+      setTimeout(() => {
+        handleSubmit();
+        setMessage("");
+      }, 200);
+    }
+  }, [message]);
 
   const stream = useStreamContext();
   const messages = stream.messages;
@@ -170,8 +180,8 @@ export function Thread() {
     prevMessageLength.current = messages.length;
   }, [messages]);
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = (e?: FormEvent) => {
+    e?.preventDefault();
     if ((input.trim().length === 0 && contentBlocks.length === 0) || isLoading)
       return;
     setFirstTokenReceived(false);
@@ -380,13 +390,12 @@ export function Thread() {
               }
               footer={
                 <div className="sticky bottom-0 flex flex-col items-center gap-8 bg-white">
-
                   <ScrollToBottom className="animate-in fade-in-0 zoom-in-95 absolute bottom-full left-1/2 mb-4 -translate-x-1/2" />
 
                   <div
                     ref={dropRef}
                     className={cn(
-                      "bg-muted relative z-10 mx-auto mb-8 w-full max-w-3xl rounded-2xl shadow-xs transition-all",
+                      "bg-input-bg relative z-10 mx-auto mb-8 w-full max-w-3xl rounded-2xl shadow-xs transition-all",
                       dragOver
                         ? "border-primary border-2 border-dotted"
                         : "border border-solid",
