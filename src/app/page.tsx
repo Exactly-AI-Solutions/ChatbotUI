@@ -10,8 +10,8 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 
 export default function DemoPage(): React.ReactNode {
   return (
-    <ThemeProvider>
-      <React.Suspense fallback={<div>Loading (layout)...</div>}>
+    <React.Suspense fallback={<div>Loading (layout)...</div>}>
+      <ThemeProvider>
         <Toaster />
         <ThreadProvider>
           <StreamProvider>
@@ -20,7 +20,7 @@ export default function DemoPage(): React.ReactNode {
             </ArtifactProvider>
           </StreamProvider>
         </ThreadProvider>
-      </React.Suspense>
-    </ThemeProvider>
+      </ThemeProvider>
+    </React.Suspense>
   );
 }
