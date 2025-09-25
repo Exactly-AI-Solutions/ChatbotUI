@@ -8,6 +8,7 @@ import { Button } from "../ui/button";
 import { Checkpoint, Message } from "@langchain/langgraph-sdk";
 import { AssistantMessage, AssistantMessageLoading } from "./messages/ai";
 import { HumanMessage } from "./messages/human";
+import { useSearchParams } from "next/navigation";
 import {
   DO_NOT_RENDER_ID_PREFIX,
   ensureToolCallsHaveResponses,
@@ -106,6 +107,9 @@ export function Thread() {
   } = useFileUpload();
   const [firstTokenReceived, setFirstTokenReceived] = useState(false);
   const isLargeScreen = useMediaQuery("(min-width: 1024px)");
+  const searchParams = useSearchParams();
+  const gradient =
+    searchParams.get("gradient") === "blue" ? "background-gradient--blue" : "";
 
   useEffect(() => {
     if (message) {
@@ -230,10 +234,10 @@ export function Thread() {
   );
 
   return (
-    <div className="flex h-screen w-full overflow-hidden">
+    <div className={cn("flex h-screen w-full overflow-hidden", gradient)}>
       <div className="relative hidden lg:flex">
         <motion.div
-          className="absolute z-20 h-full overflow-hidden border-r bg-white"
+          className="absolute z-20 h-full overflow-hidden border-r bg-white/20 backdrop-blur-[50px]"
           style={{ width: 300 }}
           animate={
             isLargeScreen
@@ -258,7 +262,7 @@ export function Thread() {
 
       <div
         className={cn(
-          "grid w-full grid-cols-[1fr_0fr] transition-all duration-500",
+          "grid w-full grid-cols-[1fr_0fr] rounded-t-[20px] rounded-b-[50px] border border-white/10 bg-white/20 backdrop-blur-[50px] transition-all duration-500",
           artifactOpen && "grid-cols-[3fr_2fr]",
         )}
       >
@@ -282,7 +286,7 @@ export function Thread() {
               : { duration: 0 }
           }
         >
-          {!chatStarted && (
+          {/* {!chatStarted && (
             <div className="absolute top-0 left-0 z-10 flex w-full items-center justify-between gap-3 p-2 pl-4">
               <div>
                 {(!chatHistoryOpen || !isLargeScreen) && (
@@ -300,8 +304,8 @@ export function Thread() {
                 )}
               </div>
             </div>
-          )}
-          {chatStarted && (
+          )} */}
+          {/* {chatStarted && (
             <div className="relative z-10 flex items-center justify-between gap-3 p-2">
               <div className="relative flex items-center justify-start gap-2">
                 <div className="absolute left-0 z-10">
@@ -335,16 +339,16 @@ export function Thread() {
 
               <div className="from-background to-background/0 absolute inset-x-0 top-full h-5 bg-gradient-to-b" />
             </div>
-          )}
+          )} */}
 
           <StickToBottom className="relative flex-1 overflow-hidden">
             <StickyToBottomContent
               className={cn(
-                "absolute inset-0 overflow-y-scroll px-4 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:bg-transparent",
+                "absolute inset-0 overflow-y-scroll px-4 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:transparent [&::-webkit-scrollbar-track]:bg-transparent",
                 !chatStarted && "mt-[25vh] flex flex-col items-stretch",
                 chatStarted && "grid grid-rows-[1fr_auto]",
               )}
-              contentClassName="pt-8 pb-16  max-w-3xl mx-auto flex flex-col gap-4 w-full"
+              contentClassName="pt-8 pb-16 w-full mx-auto flex flex-col gap-4 w-full"
               content={
                 <>
                   {messages
@@ -366,7 +370,7 @@ export function Thread() {
                       ),
                     )}
                   {/* Special rendering case where there are no AI/tool messages, but there is an interrupt.
-                    We need to render it outside of the messages list, since there are no messages to render */}
+                      We need to render it outside of the messages list, since there are no messages to render */}
                   {hasNoAIOrToolMessages && !!stream.interrupt && (
                     <AssistantMessage
                       key="interrupt-msg"
@@ -381,13 +385,13 @@ export function Thread() {
                 </>
               }
               footer={
-                <div className="sticky bottom-0 flex flex-col items-center gap-8 bg-white">
+                <div className="sticky bottom-0 mb-4 flex flex-col items-center gap-8">
                   <ScrollToBottom className="animate-in fade-in-0 zoom-in-95 absolute bottom-full left-1/2 mb-4 -translate-x-1/2" />
 
                   <div
                     ref={dropRef}
                     className={cn(
-                      "bg-input-bg relative z-10 mx-auto mb-8 w-full max-w-3xl rounded-2xl shadow-xs transition-all",
+                      "bg-input-bg relative z-10 mx-auto w-full rounded-[50px] shadow-xs transition-all",
                       dragOver
                         ? "border-primary border-2 border-dotted"
                         : "border border-solid",
@@ -395,7 +399,7 @@ export function Thread() {
                   >
                     <form
                       onSubmit={handleSubmit}
-                      className="mx-auto grid max-w-3xl grid-rows-[1fr_auto] gap-2"
+                      className="mx-auto grid grid-cols-[1fr_auto] items-center gap-2"
                     >
                       <ContentBlocksPreview
                         blocks={contentBlocks}
@@ -419,34 +423,34 @@ export function Thread() {
                           }
                         }}
                         placeholder="Type your message..."
-                        className="field-sizing-content resize-none border-none bg-transparent p-3.5 pb-0 shadow-none ring-0 outline-none focus:ring-0 focus:outline-none"
+                        className="field-sizing-content resize-none border-none bg-transparent p-4 shadow-none ring-0 outline-none focus:ring-0 focus:outline-none text-primary"
                       />
 
-                      <div className="flex items-center gap-6 p-2 pt-4">
-                        <div>
-                          <div className="flex items-center space-x-2">
-                            <Switch
-                              id="render-tool-calls"
-                              checked={hideToolCalls ?? false}
-                              onCheckedChange={setHideToolCalls}
-                            />
-                            <Label
-                              htmlFor="render-tool-calls"
-                              className="text-sm text-gray-600"
-                            >
-                              Hide Tool Calls
-                            </Label>
-                          </div>
-                        </div>
-                        <Label
-                          htmlFor="file-input"
-                          className="flex cursor-pointer items-center gap-2"
-                        >
-                          <Plus className="size-5 text-gray-600" />
-                          <span className="text-sm text-gray-600">
-                            Upload PDF or Image
-                          </span>
-                        </Label>
+                      <div className="flex items-center gap-6 p-4">
+                        {/* <div>
+                            <div className="flex items-center space-x-2">
+                              <Switch
+                                id="render-tool-calls"
+                                checked={hideToolCalls ?? false}
+                                onCheckedChange={setHideToolCalls}
+                              />
+                              <Label
+                                htmlFor="render-tool-calls"
+                                className="text-sm text-gray-600"
+                              >
+                                Hide Tool Calls
+                              </Label>
+                            </div>
+                          </div> */}
+                        {/* <Label
+                            htmlFor="file-input"
+                            className="flex cursor-pointer items-center gap-2"
+                          >
+                            <Plus className="size-5 text-gray-600" />
+                            <span className="text-sm text-gray-600">
+                              Upload PDF or Image
+                            </span>
+                          </Label> */}
                         <input
                           id="file-input"
                           type="file"
@@ -459,7 +463,7 @@ export function Thread() {
                           <Button
                             key="stop"
                             onClick={() => stream.stop()}
-                            className="ml-auto"
+                            className="ml-auto rounded-[50px]"
                           >
                             <LoaderCircle className="h-4 w-4 animate-spin" />
                             Cancel
@@ -467,13 +471,13 @@ export function Thread() {
                         ) : (
                           <Button
                             type="submit"
-                            className="ml-auto shadow-md transition-all"
+                            className="ml-auto rounded-[50px] shadow-md transition-all"
                             disabled={
                               isLoading ||
                               (!input.trim() && contentBlocks.length === 0)
                             }
                           >
-                            Send
+                            Ask
                           </Button>
                         )}
                       </div>
@@ -484,7 +488,7 @@ export function Thread() {
             />
           </StickToBottom>
         </motion.div>
-        <div className="relative flex flex-col border-l">
+        {/* <div className="relative flex flex-col border-l">
           <div className="absolute inset-0 flex min-w-[30vw] flex-col">
             <div className="grid grid-cols-[1fr_auto] border-b p-4">
               <ArtifactTitle className="truncate overflow-hidden" />
@@ -497,7 +501,7 @@ export function Thread() {
             </div>
             <ArtifactContent className="relative flex-grow" />
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
