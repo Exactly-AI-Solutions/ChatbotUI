@@ -117,3 +117,12 @@
     box-shadow: inset 9px 0 6px -1px rgb(0 0 0 / 0.02);
   }
 }
+
+.background-gradient--blue {
+  background: linear-gradient(
+    114.5deg,
+    #0f3c6c 0.95%,
+    #114574 52.35%,
+    #247389 103.75%
+  );
+}

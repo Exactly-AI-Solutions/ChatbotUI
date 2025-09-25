@@ -141,7 +141,7 @@ export function AssistantMessage({
   }
 
   return (
-    <div className="group mr-auto flex items-start gap-2">
+    <div className="group backdrop-blur-l bg-black/15 mr-auto flex items-start gap-2 p-4 rounded-lg max-w-[70%]">
       <div className="flex flex-col gap-2">
         {isToolResult ? (
           <>
@@ -155,7 +155,7 @@ export function AssistantMessage({
         ) : (
           <>
             {contentString.length > 0 && (
-              <div className="py-1">
+              <div className="py-1 text-primary">
                 <MarkdownText>{contentString}</MarkdownText>
               </div>
             )}
