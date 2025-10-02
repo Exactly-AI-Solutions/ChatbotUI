@@ -423,10 +423,10 @@ export function Thread() {
                           }
                         }}
                         placeholder="Type your message..."
-                        className="field-sizing-content resize-none border-none bg-transparent p-4 shadow-none ring-0 outline-none focus:ring-0 focus:outline-none text-primary"
+                        className="field-sizing-content resize-none border-none bg-transparent p-4 shadow-none ring-0 outline-none focus:ring-0 focus:outline-none text-primary pr-0 md:pr-4"
                       />
 
-                      <div className="flex items-center gap-6 p-4">
+                      <div className="flex items-center gap-6 p-4 pl-0 md:pl-4">
                         {/* <div>
                             <div className="flex items-center space-x-2">
                               <Switch
