@@ -74,7 +74,7 @@ export function HumanMessage({
   return (
     <div
       className={cn(
-        "group ml-auto flex max-w-[70%] items-center gap-2",
+        "group ml-auto flex max-w-[70%] items-center gap-2 rounded-lg bg-black/5 p-4 backdrop-blur-xl",
         isEditing && "w-full max-w-xl",
       )}
     >
@@ -114,7 +114,7 @@ export function HumanMessage({
             )}
             {/* Render text if present, otherwise fallback to file/image name */}
             {contentString ? (
-              <p className="ml-auto w-fit rounded-lg bg-white/10 p-4 text-right whitespace-pre-wrap backdrop-blur-xl">
+              <p className="ml-auto w-fit text-right whitespace-pre-wrap">
                 {contentString}
               </p>
             ) : null}
